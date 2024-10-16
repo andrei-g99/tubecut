@@ -33,7 +33,7 @@ def _download_video(url, output_dir, filename, format="mp4", audio_only=False):
         ydl.download([url])
         print(f"Download complete: {filename}.{format}")
 
-def _trim_video(file_path, output_dir, start_time, end_time, output_filename):
+def _trim_video(file_path, output_dir, start_time, end_time, output_filename, output_format):
     if (start_time == "") and (end_time == ""):
         raise Exception('Start Time and End Time cannot be both empty.')
 
@@ -42,11 +42,8 @@ def _trim_video(file_path, output_dir, start_time, end_time, output_filename):
         os.makedirs(output_dir)
 
     # Construct the full output file path and infer the output format
-    output_file = os.path.join(output_dir, output_filename)
+    output_file = os.path.join(output_dir, f'{output_filename}.{output_format}')
     
-    # Get the output format from the file extension (e.g., mp4, mp3, etc.)
-    output_format = output_filename.split('.')[-1]  # Extract file extension (e.g., 'mp4', 'mp3')
-
     # Trim the input file based on start_time and end_time
     input_args = {}
     if start_time != "":
@@ -58,25 +55,4 @@ def _trim_video(file_path, output_dir, start_time, end_time, output_filename):
     ffmpeg.input(file_path, **input_args).output(output_file, format=output_format).run()
 
     print(f"Trimmed video/audio saved to: {output_file}")
-
-# def _trim_video(file_path, output_dir, start_time, end_time, output_filename):
-
-#     if (start_time == "") and (end_time == ""):
-#         raise Exception('Start Time and End Time cannot be both empty.')
-
-#     # Ensure the output directory exists
-#     if not os.path.exists(output_dir):
-#         os.makedirs(output_dir)
-
-#     # Construct the full output file path
-#     output_file = os.path.join(output_dir, f'{output_filename}.mp4')
-
-
-#     if (start_time == ""):
-#         ffmpeg.input(file_path, to=end_time).output(output_file).run()
-#     elif (end_time == ""):
-#         ffmpeg.input(file_path, ss=start_time).output(output_file).run()
-#     else:
-#         ffmpeg.input(file_path, ss=start_time, to=end_time).output(output_file).run()   
-
 

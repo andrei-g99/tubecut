@@ -69,7 +69,7 @@ def on_download():
 
 def on_trim():
     try:
-        _trim_video(file_path=cut_file_path.get(), output_dir=cut_output_dir_path.get(), start_time=start_time.get(), end_time=end_time.get(), output_filename=cut_output_filename.get())
+        _trim_video(file_path=cut_file_path.get(), output_dir=cut_output_dir_path.get(), start_time=start_time.get(), end_time=end_time.get(), output_filename=cut_output_filename.get(), output_format=cut_format_var.get())
         messagebox.showinfo("Success", "Video trimmed successfully!")
     except Exception as e:
         messagebox.showerror("Error", f"Failed to trim video: {str(e)}")
