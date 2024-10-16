@@ -1,10 +1,29 @@
+from pathlib import Path
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import font
 from tkinter import ttk
 import re
+import os
+import sys
 from tkinter import messagebox 
 from tubecut.commands import _download_video, _trim_video
+
+# Get the directory of the current executable or script
+if getattr(sys, 'frozen', False):  # If running as PyInstaller bundled exe
+    current_dir = Path(sys.executable).parent  # Path of the binaries
+else:
+    current_dir = Path(__file__).parent  # For normal development
+
+
+# Path to the local ffmpeg and yt-dlp binaries in the 'bin' folder
+ffmpeg_path = current_dir / 'bin' / 'ffmpeg.exe'
+ytdlp_path = current_dir / 'bin' / 'yt-dlp.exe'
+print(ffmpeg_path)
+
+# Ensure the binaries are executable (for UNIX-based systems)
+os.chmod(ffmpeg_path, 0o755)
+os.chmod(ytdlp_path, 0o755)
 
 # Create the main window
 root = tk.Tk()
@@ -62,14 +81,25 @@ def on_download():
         elif format == formats[3] or format == formats[4] or format == formats[5]:
             audio_only = True
 
-        _download_video(url=download_url.get(), output_dir=download_output_dir_path.get(), filename=download_output_filename.get(), format=download_format_var.get(), audio_only=audio_only)
+        _download_video(url=download_url.get(),
+                        output_dir=download_output_dir_path.get(),
+                        filename=download_output_filename.get(),
+                        format=download_format_var.get(),
+                        ffmpeg_path=ffmpeg_path,
+                        audio_only=audio_only)
         messagebox.showinfo("Success", "Video downloaded successfully!")
     except Exception as e:
         messagebox.showerror("Error", f"Failed to download video: {str(e)}")
 
 def on_trim():
     try:
-        _trim_video(file_path=cut_file_path.get(), output_dir=cut_output_dir_path.get(), start_time=start_time.get(), end_time=end_time.get(), output_filename=cut_output_filename.get(), output_format=cut_format_var.get())
+        _trim_video(file_path=cut_file_path.get(),
+                    output_dir=cut_output_dir_path.get(),
+                    start_time=start_time.get(),
+                    end_time=end_time.get(),
+                    output_filename=cut_output_filename.get(),
+                    ffmpeg_path=ffmpeg_path,
+                    output_format=cut_format_var.get())
         messagebox.showinfo("Success", "Video trimmed successfully!")
     except Exception as e:
         messagebox.showerror("Error", f"Failed to trim video: {str(e)}")
