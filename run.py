@@ -4,6 +4,7 @@ from tkinter import filedialog
 from tkinter import font
 from tkinter import ttk
 import sys
+import os
 from tkinter import messagebox 
 from tubecut.commands import _download_video, _trim_video
 
@@ -13,15 +14,19 @@ else:
     current_dir = Path(__file__).parent 
 
 
-ffmpeg_path = current_dir / 'bin' / 'ffmpeg.exe'
+ffmpeg_path = current_dir / 'bin' / 'ffmpeg'
+
+# Add .exe extension if running on Windows
+if os.name == 'nt':  # 'nt' is for Windows
+    ffmpeg_path = current_dir / 'bin' / 'ffmpeg.exe'
 
 root = tk.Tk()
 root.title("TubeCut")
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
 
-window_width = int(screen_width * 0.4)
-window_height = int(screen_height * 0.3)
+window_width = int(screen_width * 0.6)
+window_height = int(screen_height * 0.5)
 
 root.geometry(f"{window_width}x{window_height}")
 
