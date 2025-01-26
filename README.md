@@ -1,5 +1,5 @@
 # TubeCut
-GUI tool for downloading content from youtube, can donwload in audio or video formats.
+GUI tool for downloading content from youtube, can download in audio or video formats.
 Can also trim video/audio.
 
 # Latest release
