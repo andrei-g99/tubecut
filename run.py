@@ -8,7 +8,7 @@ import os
 from tkinter import messagebox 
 from tubecut.commands import _download_video, _trim_video
 
-APP_VERSION = "3.0.0"
+APP_VERSION = "3.0.2"
 
 if getattr(sys, 'frozen', False): 
     current_dir = Path(sys.executable).parent 
